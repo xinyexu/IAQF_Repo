@@ -7,7 +7,7 @@ import requests
 # below are urls of csv data
 # the last line shows the overall range of provided data
 # the date in the middle shows the part we extract
-# be sure not to extract data that exceed the range
+# be sure not to extract data that exceeds the range
 # 1996-12-31 to 2019-01-21
 start_date = "2014-01-17" 
 end_date = "2019-01-17"
@@ -34,7 +34,7 @@ corporate3A_effective_yield_url = "https://fred.stlouisfed.org/graph/fredgra"\
     "fgst=lin&fgsnd=2009-06-01&line_index=1&transformation=lin&vintage_date="\
     "2019-01-21&revision_date=2019-01-21&nd=1996-12-31"
     
-# below is temporaryly useless, but for reference purpose is listed as well
+# below is temporarily useless, but for reference purpose is listed as well
 #-----------------------------------------------------------------------------
 corporate3A_optionadj_spreadurl = "https://fred.stlouisfed.org/graph/fredgra"\
     "ph.csv?bgcolor=%23e1e9f0&chart_type=line&drp=0&fo=open%20sans&graph_bgc"\
