@@ -10,7 +10,7 @@ import requests
 # be sure not to extract data that exceeds the range
 # 1996-12-31 to 2019-01-21
 start_date = "2014-01-17" 
-end_date = "2019-01-17"
+end_date = "2019-01-22"
 
 tbill_10year_daily_url = "https://fred.stlouisfed.org/graph/fredgraph.csv?bg"\
     "color=%23e1e9f0&chart_type=line&drp=0&fo=open%20sans&graph_bgcolor=%23f"\
@@ -71,9 +71,25 @@ def find_problem_dates(t_bill, corporate_dates):
 
 in_t_not_cor, in_cor_not_t = find_problem_dates(list(t_bill_daily["DATE"]), 
                                                 list(corporate_daily["DATE"]))
+# merge tbill data onto corporate date
+combined = pd.merge(corporate_daily, t_bill_daily, 
+                    how='left', left_on=['DATE'], right_on=['DATE'])
+# some missing value in combined is displayed as "."
+# this step cleans that part of data as well as NA
+cleanedCombined = combined[(combined.DGS10 != '.') &
+                           (combined.BAMLC0A1CAAAEY != '.')]
+cleanedCombined = cleanedCombined.dropna()
+# data are shown in str type, next we convert them into float
+cleanedCombined.DGS10 = cleanedCombined.DGS10.astype(float)
+cleanedCombined.BAMLC0A1CAAAEY = cleanedCombined.BAMLC0A1CAAAEY.astype(float)
+# spread is defined as (corporate - tbill)
+cleanedCombined['creditSpread'] = cleanedCombined['BAMLC0A1CAAAEY'] \
+                                  - cleanedCombined['DGS10']
 
-
-
+# data visualization
+cleanedCombined.plot(kind='line')
+cleanedCombined['creditSpread'].plot(kind='line')
+cleanedCombined.to_csv('creditSpread.csv')
 
 
 
