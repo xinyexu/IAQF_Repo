@@ -2,6 +2,22 @@ import numpy as np
 import pandas as pd
 import io
 import requests
+import matplotlib.pyplot as plt
+
+def find_problem_dates(t_bill, corporate_dates):
+    """
+    This function checks if two list of dates match.
+    input variables: two lists containing string data
+    """
+    in_t_not_cor = []
+    in_cor_not_t = []
+    for i in corporate_dates:
+        if i not in t_bill:
+            in_cor_not_t.append(i)
+    for i in t_bill:
+        if i not in corporate_dates:
+            in_t_not_cor.append(i)
+    return in_t_not_cor, in_cor_not_t
 
 """Data Extraction"""
 # below are urls of csv data
@@ -9,7 +25,7 @@ import requests
 # the date in the middle shows the part we extract
 # be sure not to extract data that exceeds the range
 # 1996-12-31 to 2019-01-21
-start_date = "2014-01-17" 
+start_date = "1996-12-31" 
 end_date = "2019-01-22"
 
 tbill_10year_daily_url = "https://fred.stlouisfed.org/graph/fredgraph.csv?bg"\
@@ -47,33 +63,33 @@ corporate3A_optionadj_spreadurl = "https://fred.stlouisfed.org/graph/fredgra"\
     "fgst=lin&fgsnd=2009-06-01&line_index=1&transformation=lin&vintage_date="\
     "2019-01-21&revision_date=2019-01-21&nd=1996-12-31"
 #-----------------------------------------------------------------------------
-     
+
+vix_url = "https://raw.githubusercontent.com/israeldi/IAQF_Repo/master/VIX.c"\
+    "sv?token=Adz3eFtj4WigzT4Y4E_dexMzAwnxDCM3ks5cXK3UwA%3D%3D"
+
 tbill_string_file = requests.get(tbill_10year_daily_url).content
 t_bill_daily = pd.read_csv(io.StringIO(tbill_string_file.decode('utf-8')))
 
 cor_3A_string_file = requests.get(corporate3A_effective_yield_url).content
 corporate_daily = pd.read_csv(io.StringIO(cor_3A_string_file.decode('utf-8')))
 
-def find_problem_dates(t_bill, corporate_dates):
-    """
-    This function checks if two list of dates match.
-    input variables: two lists containing string data
-    """
-    in_t_not_cor = []
-    in_cor_not_t = []
-    for i in corporate_dates:
-        if i not in t_bill:
-            in_cor_not_t.append(i)
-    for i in t_bill:
-        if i not in corporate_dates:
-            in_t_not_cor.append(i)
-    return in_t_not_cor, in_cor_not_t
+vix_string_file = requests.get(vix_url).content
+vix_daily = pd.read_csv(io.StringIO(vix_string_file.decode('utf-8')))
+
+
+""" Data Cleaning """
 
 in_t_not_cor, in_cor_not_t = find_problem_dates(list(t_bill_daily["DATE"]), 
                                                 list(corporate_daily["DATE"]))
-# merge tbill data onto corporate date
+# merge data
 combined = pd.merge(corporate_daily, t_bill_daily, 
                     how='left', left_on=['DATE'], right_on=['DATE'])
+combined["DATE"] = pd.to_datetime(combined["DATE"])
+vix_daily["Date"] = pd.to_datetime(vix_daily["Date"])
+combined = pd.merge(combined, vix_daily, 
+                    how = "inner", left_on = ["DATE"], right_on = ["Date"])
+combined = combined.drop(["Date"],axis=1)
+
 # some missing value in combined is displayed as "."
 # this step cleans that part of data as well as NA
 cleanedCombined = combined[(combined.DGS10 != '.') &
@@ -86,17 +102,26 @@ cleanedCombined.BAMLC0A1CAAAEY = cleanedCombined.BAMLC0A1CAAAEY.astype(float)
 cleanedCombined['creditSpread'] = cleanedCombined['BAMLC0A1CAAAEY'] \
                                   - cleanedCombined['DGS10']
 
-# data visualization
+"""Visualization"""
 cleanedCombined.plot(kind='line')
 cleanedCombined['creditSpread'].plot(kind='line')
 cleanedCombined.to_csv('creditSpread.csv')
 
 
+"""Regression"""
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score
 
+cleanedCombined = cleanedCombined.dropna()
+Y, X = cleanedCombined["creditSpread"], cleanedCombined[["VIX","ShiftVIX"]]
 
+reg_model = LinearRegression()
+reg_model.fit(X,Y)
+Y_predicted = reg_model.predict(X)
 
-
-
+r2 = r2_score(Y,Y_predicted)
+plt.plot(Y)
+plt.plot(Y_predicted)
 
 
 
