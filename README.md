@@ -5,6 +5,10 @@
 ### Leverage and Spread - Xinye 
 The effect of future leverage is large, generally exceeding the effect of contemporaneous leverage to predict spread.
 
+Contemporaneous leverage: 
+1. Market value of debt / (Market value of debt + Market value of equity)
+2. Book value of debt / Book value of debt and equity 
+
 To investigate leverage prediction by investors, we construct 3 proxies for leverage changes, based on 3 theoretical perspectives on firm capital structure:
 1. LEV, (a vector of firm characteristics: lots of financial statement data), linear model; relies on the trade-off theory, 
 2. FINDEFA, (cash dividends, net investment, working capital, net cash flow) relies on the pecking order theory, 
