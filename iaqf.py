@@ -65,7 +65,10 @@ corporate3A_optionadj_spreadurl = "https://fred.stlouisfed.org/graph/fredgra"\
 #-----------------------------------------------------------------------------
 
 vix_url = "https://raw.githubusercontent.com/israeldi/IAQF_Repo/master/VIX.c"\
-    "sv?token=Adz3eFtj4WigzT4Y4E_dexMzAwnxDCM3ks5cXK3UwA%3D%3D"
+    "sv?token=Adz3eDBWYvzwzvryfa2bkzbv8WVYZcacks5ccDzLwA%3D%3D"
+    
+sp500_url = "https://raw.githubusercontent.com/israeldi/IAQF_Repo/master/SP5"\
+    "00.csv?token=Adz3eKtYe3cIRzh-uVepAn7hL5SxIW60ks5ccEU0wA%3D%3D"
 
 tbill_string_file = requests.get(tbill_10year_daily_url).content
 t_bill_daily = pd.read_csv(io.StringIO(tbill_string_file.decode('utf-8')))
@@ -76,6 +79,8 @@ corporate_daily = pd.read_csv(io.StringIO(cor_3A_string_file.decode('utf-8')))
 vix_string_file = requests.get(vix_url).content
 vix_daily = pd.read_csv(io.StringIO(vix_string_file.decode('utf-8')))
 
+sp500_string_file = requests.get(sp500_url).content
+sp500_daily = pd.read_csv(io.StringIO(sp500_string_file.decode('utf-8')))
 
 """ Data Cleaning """
 
@@ -84,11 +89,18 @@ in_t_not_cor, in_cor_not_t = find_problem_dates(list(t_bill_daily["DATE"]),
 # merge data
 combined = pd.merge(corporate_daily, t_bill_daily, 
                     how='left', left_on=['DATE'], right_on=['DATE'])
+
 combined["DATE"] = pd.to_datetime(combined["DATE"])
 vix_daily["Date"] = pd.to_datetime(vix_daily["Date"])
-combined = pd.merge(combined, vix_daily, 
+sp500_daily["Date"] = pd.to_datetime(sp500_daily["Date"])
+
+combined = pd.merge(combined, vix_daily,
                     how = "inner", left_on = ["DATE"], right_on = ["Date"])
-combined = combined.drop(["Date"],axis=1)
+
+combined = pd.merge(combined, sp500_daily,
+                    how = "inner", left_on = ["DATE"], right_on = ["Date"])
+
+#combined = combined.drop(["Date"],axis=1)
 
 # some missing value in combined is displayed as "."
 # this step cleans that part of data as well as NA
