@@ -144,9 +144,20 @@ combined["SLOPE"] = combined["T10Y2Y"] - combined["T10Y2Y"].shift(1)
 combined["SKEW_DIFF1"] = combined["SKEW"] - combined["SKEW"].shift(1)
 combined["SP500_R"] = (combined["Adj Close"] - 
         combined["Adj Close"].shift(1)) / combined["Adj Close"].shift(1)
+combined["SPREAD_SHIFT1"] = combined["SPREAD"].shift(-1)
 features = ["DGS10_DIFF1", "VIX_DIFF1", "SLOPE", "SKEW_DIFF1", "SP500_R"]
-others = ["DATE", "SPREAD_DIFF1"]
+others = ["DATE", "SPREAD_DIFF1", "SPREAD_SHIFT1"]
 combined = combined[features+others].dropna()
+
+# ----------------------------------------------------------------------------
+# convert to monthly frequency
+# ----------------------------------------------------------------------------
+combined["y_and_m"] = combined["DATE"].map(lambda x: 100 * x.year + x.month)
+my_agg_functions = {"DGS10_DIFF1":"sum", "VIX_DIFF1":"sum", "SLOPE":"sum", 
+                    "SKEW_DIFF1":"sum", "SP500_R":"sum", "SPREAD_DIFF1":"sum"}
+combined_monthly = combined.groupby(by="y_and_m").agg(my_agg_functions)
+combined_monthly["SPREAD_M_DIFF1"] = combined_monthly["SPREAD_DIFF1"].shift(-1)
+combined_monthly = combined_monthly.dropna()
 
 
 # ----------------------------------------------------------------------------
@@ -166,15 +177,16 @@ r2 = r2_score(Y,Y_predicted)
 plt.plot(Y)
 plt.plot(Y_predicted)
 
-
-
 """Transfer to Classification Problem"""
 
 """Logistic Regression"""
 # if spread goes up or stays the same, define as 1
 # if spread goes down, defines as 0
 # defined as : today's spread - yesterday's spread
-combined["spread_01"] = combined["SPREAD_DIFF1"].map(lambda x: 1 if x>=0 else 0)
+combined["spread_01"] = combined["SPREAD_SHIFT1"].map(lambda 
+        x: 1 if x >= 0.5 else 0)
+combined_monthly["spread_01"] = combined_monthly["SPREAD_M_DIFF1"].map(lambda 
+                x: 1 if x >= 0 else 0)
 # split the data
 from sklearn.model_selection import train_test_split
 X_all = combined[features]
@@ -188,7 +200,7 @@ from sklearn.linear_model import LogisticRegression
 log_reg = LogisticRegression()
 log_reg.fit(x_train, y_train)
 from sklearn.model_selection import cross_val_score
-scores = cross_val_score(log_reg, X_all, Y_all, scoring="accuracy", cv=5)
+scores = cross_val_score(log_reg, X_all, Y_all, scoring="accuracy", cv=10)
 #using the model on test data
 y_train_predicted = log_reg.predict_proba(x_train)
 y_predicted = log_reg.predict(x_test)
