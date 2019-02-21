@@ -3,6 +3,16 @@
 \documentclass[english]{IEEEtran}
 \usepackage[T1]{fontenc}
 \usepackage[latin9]{luainputenc}
+\usepackage{array}
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+%% Because html converters don't know tabularnewline
+\providecommand{\tabularnewline}{\\}
+
+\makeatother
+
 \usepackage{babel}
 \begin{document}
 
@@ -21,6 +31,37 @@ our team has built an open-source image analysis framework for super-resolution
 microscopy designed to combine high performance and ease of use.
 
 \section*{Introduction}
+
+\begin{tabular}{|l||l||>{\raggedright}p{0.15\paperwidth}|}
+\hline 
+Abbreviation & Name of Variable & Variable Description\tabularnewline
+\hline 
+\hline 
+CS & Credit Spread & Credit spread of US investment grade corporate bonds (e.g. BofAML
+US Corporate AAA) over US Treasuries (e.g. 10-Year Treasury Constant
+Maturity Rate). \tabularnewline
+\hline 
+\hline 
+LEVER & Leverage & Long-term debt divided by total assets\tabularnewline
+\hline 
+\hline 
+R & Risk-free rate & Yield of 10-Year Treasury bonds.\tabularnewline
+\hline 
+\hline 
+SLOPE & Slope of terms & Yield on 10-year Treasury bonds minus yield on 2-year Treasury bonds,\tabularnewline
+\hline 
+\hline 
+VIX & Volatility Index & Average implied volatility of eight near-the-money options on the
+S\&P 100 index?\tabularnewline
+\hline 
+\hline 
+RETSP & S\&P 500 index return & Return on the S\&P 500 stock index (frequency?)\tabularnewline
+\hline 
+\hline 
+JUMP & Change in slope of Volatility Smirk & A large size jump on S\&P 100 index, calculated using out-of-the money
+puts as well as at- and in-the-money call options?\tabularnewline
+\hline 
+\end{tabular}
 
 \section*{Methodologies}
 

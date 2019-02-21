@@ -493,7 +493,7 @@ Deep factor model
 \begin_inset Text
 
 \begin_layout Plain Layout
-DNN
+Leverage
 \end_layout
 
 \end_inset
@@ -509,35 +509,6 @@ Long-term debt divided by total assets
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-DNN+LRP
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-We used the multi-later perec
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
 <cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
@@ -547,11 +518,11 @@ Linear model
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Risk-free rate
 \end_layout
 
 \end_inset
@@ -560,7 +531,36 @@ Linear model
 \begin_inset Text
 
 \begin_layout Plain Layout
-Linear model was implemented with scikit-learn with class
+Yield of 10-Year Treasury bonds.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Support Vector Regression
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Slope of terms
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yield on 10-year Treasury bonds minus yield on 2-year Treasury bonds,
 \end_layout
 
 \end_inset
@@ -571,7 +571,7 @@ Linear model was implemented with scikit-learn with class
 \begin_inset Text
 
 \begin_layout Plain Layout
-Support Vector Regression
+VIX
 \end_layout
 
 \end_inset
@@ -580,7 +580,7 @@ Support Vector Regression
 \begin_inset Text
 
 \begin_layout Plain Layout
-Slope of terms
+Volatility Index
 \end_layout
 
 \end_inset
@@ -589,16 +589,8 @@ Slope of terms
 \begin_inset Text
 
 \begin_layout Plain Layout
-Support vector regression (SVR) was implemented with scikit-learn with class
- 
-\begin_inset Quotes eld
-\end_inset
-
-sklearn.svm.SVR.
-\begin_inset Quotes erd
-\end_inset
-
- All parameters were default values in this class.
+Average implied volatility of eight near-the-money options on the S&P 100
+ index?
 \end_layout
 
 \end_inset
