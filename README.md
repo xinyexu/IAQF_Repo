@@ -1,5 +1,7 @@
 # IAQF_Repo
 
+### MODEL LEARN WEB
+https://machinelearningmastery.com/time-series-prediction-lstm-recurrent-neural-networks-python-keras/
 
 
 ### Leverage and Spread - Xinye 
