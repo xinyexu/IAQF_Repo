@@ -144,20 +144,24 @@ combined["SLOPE"] = combined["T10Y2Y"] - combined["T10Y2Y"].shift(1)
 combined["SKEW_DIFF1"] = combined["SKEW"] - combined["SKEW"].shift(1)
 combined["SP500_R"] = (combined["Adj Close"] - 
         combined["Adj Close"].shift(1)) / combined["Adj Close"].shift(1)
-combined["SPREAD_SHIFT1"] = combined["SPREAD"].shift(-1)
+combined["SPREAD_DIFF1_TOMORROW"] = combined["SPREAD_DIFF1"].shift(-1)
 features = ["DGS10_DIFF1", "VIX_DIFF1", "SLOPE", "SKEW_DIFF1", "SP500_R"]
-others = ["DATE", "SPREAD_DIFF1", "SPREAD_SHIFT1"]
+others = ["DATE", "SPREAD_DIFF1", "SPREAD_DIFF1_TOMORROW", "SPREAD"]
 combined = combined[features+others].dropna()
 
 # ----------------------------------------------------------------------------
 # convert to monthly frequency
 # ----------------------------------------------------------------------------
+"""
 combined["y_and_m"] = combined["DATE"].map(lambda x: 100 * x.year + x.month)
 my_agg_functions = {"DGS10_DIFF1":"sum", "VIX_DIFF1":"sum", "SLOPE":"sum", 
                     "SKEW_DIFF1":"sum", "SP500_R":"sum", "SPREAD_DIFF1":"sum"}
 combined_monthly = combined.groupby(by="y_and_m").agg(my_agg_functions)
 combined_monthly["SPREAD_M_DIFF1"] = combined_monthly["SPREAD_DIFF1"].shift(-1)
 combined_monthly = combined_monthly[features+["SPREAD_M_DIFF1"]+["SPREAD_DIFF1"]]
+combined_monthly["SPREAD_M_AR1"] = combined_monthly["SPREAD_DIFF1"]
+combined_monthly["SPREAD_M_AR2"] = combined_monthly["SPREAD_DIFF1"].shift(1)
+combined_monthly["VIX_AR1"] = combined_monthly["VIX_DIFF1"].shift(1)
+#features = features + ["SPREAD_M_AR1", "SPREAD_M_AR2", "VIX_AR1"]
 combined_monthly = combined_monthly.dropna()
-
-
+"""
