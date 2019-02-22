@@ -54,10 +54,10 @@ corporate3A_effective_yield_url = "https://fred.stlouisfed.org/graph/fredgra"\
     "2019-01-21&revision_date=2019-01-21&nd=1996-12-31"
 
 vix_url = "https://raw.githubusercontent.com/israeldi/IAQF_Repo/master/VIX.c"\
-    "sv?token=Adz3eDBWYvzwzvryfa2bkzbv8WVYZcacks5ccDzLwA%3D%3D"
+    "sv?token=Adz3eLTpsYEkd6i1sNXwIytcoMKygd-sks5ceYo-wA%3D%3D"
     
 sp500_url = "https://raw.githubusercontent.com/israeldi/IAQF_Repo/master/SP5"\
-    "00.csv?token=Adz3eKtYe3cIRzh-uVepAn7hL5SxIW60ks5ccEU0wA%3D%3D"
+    "00.csv?token=Adz3eEwHk1Ida5DihqZQAnKa1uMaO77Jks5ceYqmwA%3D%3D"
     
 tbill_10m2_url = "https://raw.githubusercontent.com/israeldi/IAQF_Repo/maste"\
     "r/T10Y2Y.csv?token=Adz3eLkLfrG89B485J_tlys8LmyiGB3uks5ccLZdwA%3D%3D"
