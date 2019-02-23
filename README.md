@@ -3,6 +3,8 @@
 ### MODEL LEARN WEB
 https://machinelearningmastery.com/time-series-prediction-lstm-recurrent-neural-networks-python-keras/
 
+### IAQF Report Link
+https://www.overleaf.com/4993599915ftffjshfbfkz
 
 ### Leverage and Spread - Xinye 
 
