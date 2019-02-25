@@ -60,10 +60,14 @@ sp500_url = "https://raw.githubusercontent.com/israeldi/IAQF_Repo/master/SP5"\
     "00.csv?token=Adz3eEwHk1Ida5DihqZQAnKa1uMaO77Jks5ceYqmwA%3D%3D"
     
 tbill_10m2_url = "https://raw.githubusercontent.com/israeldi/IAQF_Repo/maste"\
-    "r/T10Y2Y.csv?token=Adz3eLkLfrG89B485J_tlys8LmyiGB3uks5ccLZdwA%3D%3D"
+    "r/T10Y2Y.csv?token=Adz3eAowDIe2I2EJwGmywnScMyKygKkxks5cehM3wA%3D%3D"
 
 skew_url = "https://raw.githubusercontent.com/israeldi/IAQF_Repo/master/skew"\
-    "dailyprices.csv?token=Adz3eBMpEkTEFSGm2JyqVouIEAP8VPiMks5ccLakwA%3D%3D"
+    "dailyprices.csv?token=Adz3eCe-TW-ul1jvDK0YdfxxR-fggTvHks5cehNiwA%3D%3D"
+    
+
+swap_spread_url = "https://raw.githubusercontent.com/israeldi/IAQF_Repo/master"\
+    "/swap_spread.csv?token=Ad9pkVtJaR6En7AlPCcLvWJPD_7H0CPkks5cfW45wA%3D%3D"    
 # ----------------------------------------------------------------------------
 # convert url into dataframe
 # ----------------------------------------------------------------------------
@@ -85,6 +89,10 @@ t10m2_daily = pd.read_csv(io.StringIO(t10m2_string_file.decode('utf-8')))
 skew_string_file = requests.get(skew_url).content
 skew_daily = pd.read_csv(io.StringIO(skew_string_file.decode('utf-8')))
 
+
+swap_spread_string_file = requests.get(swap_spread_url).content
+swap_spread_daily = pd.read_csv(io.StringIO(swap_spread_string_file.decode('utf-8')))
+
 """ Data Cleaning """
 # ----------------------------------------------------------------------------
 # convert date into same standard
@@ -95,6 +103,7 @@ vix_daily["DATE"] = pd.to_datetime(vix_daily["Date"])
 sp500_daily["DATE"] = pd.to_datetime(sp500_daily["Date"])
 t10m2_daily["DATE"] = pd.to_datetime(t10m2_daily["DATE"])
 skew_daily["DATE"] = pd.to_datetime(skew_daily["Date"])
+swap_spread_daily["DATE"] = pd.to_datetime(swap_spread_daily["Dates"])
 # ----------------------------------------------------------------------------
 # merge dataframes
 # ----------------------------------------------------------------------------
@@ -112,11 +121,13 @@ combined = pd.merge(combined, t10m2_daily,
 
 combined = pd.merge(combined, skew_daily,
                     how = "inner", left_on = ["DATE"], right_on = ["DATE"])
+combined = pd.merge(combined, swap_spread_daily,
+                    how = "inner", left_on = ["DATE"], right_on = ["DATE"])
 # ----------------------------------------------------------------------------
 # select features
 # ----------------------------------------------------------------------------
 col_names = ["DATE", "BAMLC0A1CAAAEY", "DGS10", "VIX", "Adj Close", "T10Y2Y",
-             "SKEW"]
+             "SKEW", "SWAPSPREAD"]
 combined = combined[col_names]
 # ----------------------------------------------------------------------------
 # deal with missing values, displayed as "." or "NA"
@@ -145,7 +156,7 @@ combined["SKEW_DIFF1"] = combined["SKEW"] - combined["SKEW"].shift(1)
 combined["SP500_R"] = (combined["Adj Close"] - 
         combined["Adj Close"].shift(1)) / combined["Adj Close"].shift(1)
 combined["SPREAD_DIFF1_TOMORROW"] = combined["SPREAD_DIFF1"].shift(-1)
-features = ["DGS10_DIFF1", "VIX_DIFF1", "SLOPE", "SKEW_DIFF1", "SP500_R"]
+features = ["DGS10_DIFF1", "VIX_DIFF1", "SLOPE", "SKEW_DIFF1", "SP500_R", "SWAPSPREAD"]
 others = ["DATE", "SPREAD_DIFF1", "SPREAD_DIFF1_TOMORROW", "SPREAD"]
 combined = combined[features+others].dropna()
 
