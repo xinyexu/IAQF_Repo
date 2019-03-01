@@ -41,12 +41,12 @@ x_test = data.frame(
 )
 
 yfit = wbart(
-  x_train, real_train_val, x_test,
+  x_train, diff_real_train, x_test,
   nskip=500,ndpost=5000
 )
 
 x_axis_train = data$X[3: c(num_train + 2)]
-x_axis_test = data$X[c(num_train + 2): c(num_total - 1)]
+x_axis_test = data$X[c(num_train + 2): num_total]
 
 y_train_pred = c(data$SPREAD[3],apply(yfit$yhat.train,2,mean) + data$SPREAD[3:c(num_train + 1)])
 y_test_pred = c(data$SPREAD[c(num_train+2)],apply(yfit$yhat.test,2,mean) + data$SPREAD[c(num_train + 2):c(num_total - 1)])
@@ -95,6 +95,10 @@ predict_test = data.frame(
   REAL_TEST = real_test_val,
   PRED_TEST = pred_test
 )
+
+real ??????
+train ??????
+test ??????
 
 write.csv(predict_train, file="PRED_TRAIN_BART.csv")
 write.csv(predict_test, file="PRED_TEST_BART.csv")
