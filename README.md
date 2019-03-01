@@ -6,7 +6,7 @@ https://machinelearningmastery.com/time-series-prediction-lstm-recurrent-neural-
 ### IAQF Report Link
 https://www.overleaf.com/4993599915ftffjshfbfkz
 
-### Leverage and Spread - Xinye 
+### Leverage and Spread 
 
 Main conclusion: <br />
 The effect of future leverage is large, generally exceeding the effect of contemporaneous leverage to predict spread.
