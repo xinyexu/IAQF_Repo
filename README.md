@@ -4,7 +4,7 @@
 https://machinelearningmastery.com/time-series-prediction-lstm-recurrent-neural-networks-python-keras/
 
 ### IAQF Report Link
-https://www.overleaf.com/4993599915ftffjshfbfkz
+https://www.overleaf.com/read/mcxctkktkwzy
 
 ### Leverage and Spread 
 
